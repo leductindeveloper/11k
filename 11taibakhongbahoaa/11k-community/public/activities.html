@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11K Portal | Hoạt Động</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#ff6c00', secondary: '#ed8720', dark: '#35575a', olive: '#98a84c', bg: '#fdfaf8' }, fontFamily: { sans: ['Inter', 'Nunito', 'sans-serif'] } } } }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-bg font-sans text-gray-800 antialiased">
+        <nav class="bg-white/90 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 w-full">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary text-white rounded-xl flex items-center justify-center font-black text-xl shadow-lg ring-2 ring-orange-100 transform group-hover:scale-105 transition-transform">
+                        11K</div>
+                    <div class="hidden sm:flex flex-col">
+                        <span class="font-extrabold text-xl text-dark tracking-tight leading-none uppercase">Cổng Thông Tin 11K</span>
+                        <span class="text-[10px] font-bold text-gray-400 tracking-widest uppercase mt-0.5">Hệ thống Quản lý Nội bộ</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex space-x-6 items-center">
+                    <a href="index.html" class="text-gray-500 hover:text-primary font-semibold text-sm transition-colors">Bảng tin</a>
+                    <a href="documents.html" class="text-gray-500 hover:text-primary font-semibold text-sm transition-colors">Tài liệu</a>
+                    <a href="honors.html" class="text-gray-500 hover:text-primary font-semibold text-sm transition-colors">Bảng vàng</a>
+                    <a href="recap.html" class="text-gray-500 hover:text-primary font-semibold text-sm transition-colors">Sự kiện</a>
+                    <a href="memories.html" class="text-gray-500 hover:text-primary font-semibold text-sm transition-colors">Kỷ niệm</a>
+                    <a href="members.html" class="text-gray-500 hover:text-primary font-semibold text-sm transition-colors">Thành viên</a>
+                    <div id="auth-section"></div> <!-- Dynamic Auth (Hidden for guests) -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex items-center gap-3 mb-10">
+            <a href="index.html" class="w-10 h-10 bg-white rounded-full flex justify-center items-center shadow-sm text-gray-400 hover:text-primary hover:shadow-md transition-all"><i class="fas fa-arrow-left"></i></a>
+            <div>
+                <h1 class="text-3xl font-black text-dark tracking-tight">Hoạt Động Khóa</h1>
+                <p class="text-sm text-gray-500 font-medium mt-1">Sự kiện từ Đoàn trường và các Câu lạc bộ</p>
+            </div>
+        </div>
+
+        <div class="admin-only hidden mb-12 p-8 glass-card rounded-3xl shadow-lg border-t-4 border-olive bg-white">
+            <h3 class="font-black text-2xl mb-8 text-dark tracking-tight"><i class="fas fa-calendar-plus text-olive mr-2"></i> Đăng Tải Hoạt Động Mới</h3>
+            
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Left Column: Image Upload & Preview -->
+                <div class="w-full lg:w-1/2 flex flex-col gap-4">
+                    <label id="a-drop-zone" for="a-file" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-olive/40 rounded-3xl cursor-pointer bg-emerald-50/50 hover:bg-emerald-50 transition-colors group relative overflow-hidden">
+                        <div class="flex flex-col items-center justify-center z-10">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-olive/50 group-hover:text-olive transition-colors mb-3"></i>
+                            <p class="mb-1 text-sm text-gray-700 font-bold"><span class="text-olive font-black">Nhấn để chọn</span> hoặc kéo thả từng ảnh</p>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Sẽ lưu dồn nhiều ảnh</p>
+                        </div>
+                        <input id="a-file" type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" multiple accept="image/*" />
+                    </label>
+                    <div id="a-previews" class="grid grid-cols-3 sm:grid-cols-4 gap-3 hidden"></div>
+                </div>
+
+                <!-- Right Column: Content Input -->
+                <div class="w-full lg:w-1/2 flex flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Tên sự kiện</label>
+                            <input type="text" id="a-title" placeholder="Tên sự kiện..." class="w-full bg-gray-50 border border-transparent focus:bg-white text-gray-800 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-olive/50 font-bold shadow-inner transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Đơn vị tổ chức</label>
+                            <input type="text" id="a-club" placeholder="Đơn vị tổ chức..." class="w-full bg-gray-50 border border-transparent focus:bg-white text-gray-800 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-olive/50 font-bold shadow-inner transition-all">
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col mt-2">
+                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Mô tả chi tiết</label>
+                        <textarea id="a-desc" placeholder="Chi tiết hoạt động này..." class="w-full flex-1 bg-gray-50 border border-transparent focus:bg-white text-gray-800 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-olive/50 font-medium shadow-inner transition-all resize-none min-h-[100px]"></textarea>
+                    </div>
+                    <button onclick="uploadAct()" class="bg-olive hover:bg-emerald-600 text-white w-full py-4 rounded-2xl font-black shadow-lg shadow-olive/30 flex items-center justify-center gap-2 text-sm uppercase tracking-widest transition-all hover:-translate-y-1 mt-auto">
+                        <i class="fas fa-bullhorn"></i> Xét duyệt & Đăng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="container" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        let selectedActFiles = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(loadActs, 400);
+
+            const aFileInput = document.getElementById('a-file');
+            if (aFileInput) {
+                aFileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        Array.from(e.target.files).forEach(f => selectedActFiles.push(f));
+                        renderActPreviews();
+                    }
+                    e.target.value = '';
+                });
+            }
+        });
+
+        function renderActPreviews() {
+            const previewContainer = document.getElementById('a-previews');
+            if (selectedActFiles.length === 0) {
+                previewContainer.innerHTML = '';
+                previewContainer.classList.add('hidden');
+                return;
+            }
+            
+            previewContainer.innerHTML = '';
+            previewContainer.classList.remove('hidden');
+            
+            selectedActFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'aspect-square rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white relative group animate-fade-in cursor-pointer';
+                    div.onclick = () => {
+                        selectedActFiles.splice(index, 1);
+                        renderActPreviews();
+                    };
+                    div.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-trash-alt text-white text-xl shadow-sm"></i>
+                        </div>
+                    `;
+                    previewContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function uploadAct() {
+            const t = document.getElementById('a-title').value;
+            const c = document.getElementById('a-club').value;
+            const d = document.getElementById('a-desc').value;
+            if(!t || !c || !d || selectedActFiles.length === 0) return showToast("Điền đủ trường yêu cầu và chọn ảnh", "error");
+            
+            showToast("Đang upload ảnh...");
+            const form = new FormData();
+            for (let i = 0; i < selectedActFiles.length; i++) {
+                form.append('media', selectedActFiles[i]);
+            }
+            const r = await fetch('/api/upload-multiple', { method: 'POST', body: form });
+            const dat = await r.json();
+
+            let mediaUrl = dat.urls && dat.urls.length > 0 ? dat.urls[0] : null;
+
+            await apiPost('activities', { title: t, club: c, description: d, mediaUrl, mediaUrls: dat.urls });
+            showToast("Đăng hoạt động thành công", "success");
+
+            document.getElementById('a-title').value = '';
+            document.getElementById('a-club').value = '';
+            document.getElementById('a-desc').value = '';
+            selectedActFiles = [];
+            renderActPreviews();
+
+            loadActs();
+        }
+
+        async function loadActs() {
+            const acts = await apiGet('activities');
+            const c = document.getElementById('container');
+            if(acts.length === 0) return c.innerHTML = '<div class="col-span-full glass-card p-10 text-center rounded-3xl"><p class="text-gray-500 font-bold">Chưa có sự kiện nào.</p></div>';
+            
+            c.innerHTML = acts.map(a => `
+                <div class="glass-card rounded-3xl overflow-hidden shadow-sm flex flex-col group hover:shadow-xl transition-all transform hover:-translate-y-2 relative bg-white">
+                    ${currentUser && currentUser.role === 'Admin' ? `<button onclick="deleteAct('${a.id}')" class="absolute top-4 right-4 bg-white/70 hover:bg-red-50 text-red-500 w-8 h-8 rounded-full flex items-center justify-center transition-colors z-20 shadow-sm"><i class="fas fa-trash"></i></button>` : ''}
+                    
+                    <div class="${a.mediaUrls && a.mediaUrls.length > 0 ? `grid grid-cols-${Math.min(2, a.mediaUrls.length)}` : ''} w-full h-56 bg-gradient-to-tr from-olive to-emerald-600">
+                        ${a.mediaUrls && a.mediaUrls.length > 0 ? a.mediaUrls.slice(0, 2).map((url, idx) => `
+                            <div class="relative w-full h-56 group/img">
+                                <img src="${url}" class="w-full h-full object-cover border-b border-gray-100 group-hover/img:scale-105 transition-transform duration-500">
+                                ${idx === 1 && a.mediaUrls.length > 2 ? `<div class="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none"><span class="text-white font-black text-2xl">+${a.mediaUrls.length - 2}</span></div>` : ''}
+                            </div>
+                        `).join('') : (a.mediaUrl ? `<img src="${a.mediaUrl}" class="w-full h-56 object-cover border-b border-gray-100 group-hover:scale-105 transition-transform duration-500">` : '')}
+                    </div>
+                    
+                    <div class="p-6 relative bg-white flex-1 flex flex-col z-10 -mt-2 rounded-t-3xl border-t border-white shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+                        <div class="inline-block px-3 py-1 bg-olive/10 text-olive font-black text-[10px] uppercase tracking-wider rounded-xl self-start mb-3 border border-olive/20 shadow-sm">${a.club}</div>
+                        <h3 class="text-2xl font-black text-dark w-full mb-2 leading-tight">${a.title}</h3>
+                        <p class="text-sm text-gray-600 font-medium leading-relaxed italic line-clamp-3 mb-4">${a.description}</p>
+                        <p class="text-xs text-gray-400 font-bold mt-auto"><i class="fas fa-calendar-check mr-1 text-olive"></i> ${timeAgo(a.createdAt)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function deleteAct(id) {
+            if (confirm("Hủy sự kiện?")) {
+                await fetch(`/api/activities/${id}`, { method: 'DELETE' });
+                showToast("Đã hủy");
+                loadActs();
+            }
+        }
+    </script>
+</body>
+</html>
